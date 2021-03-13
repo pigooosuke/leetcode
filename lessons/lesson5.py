@@ -1,15 +1,23 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        ans = ""
-        candidate = ""
-        for w in s:
-            if len(candidate) % 2 == 0:
+        p = ''
+        for i in range(len(s)):
+            p1 = self.get_palindrome(s, i, i+1)
+            p2 = self.get_palindrome(s, i, i)
+            print(f"{p1=}, {p2=}")
+            p = max([p, p1, p2], key=lambda x: len(x))
+        return p
 
-            elif len(candidate) % 2 == 1:
-                
-
-        return ans
+    def get_palindrome(self, s: str, l: int, r: int) -> str:
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+        return s[l+1:r]
 
 
 solution = Solution()
-solution.longestPalindrome(s="cbbd")
+ans = solution.longestPalindrome(s="cbbd")
+print(f"{ans=}")
+
+
+print("1234"[2:3])
