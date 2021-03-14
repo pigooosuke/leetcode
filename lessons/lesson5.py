@@ -1,22 +1,34 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        p = ''
-        for i in range(len(s)):
-            p1 = self.get_palindrome(s, i, i+1)
-            p2 = self.get_palindrome(s, i, i)
-            print(f"{p1=}, {p2=}")
-            p = max([p, p1, p2], key=lambda x: len(x))
-        return p
+        n = len(s)
+        # Form a bottom-up dp 2d array
+        # dp[i][j] will be 'true' if the string from index i to j is a palindrome.
+        dp = [[False] * n for _ in range(n)]
+        ans = ''
+        # every string with one character is a palindrome
+        for i in range(n):
+            dp[i][i] = True
+            ans = s[i]
 
-    def get_palindrome(self, s: str, l: int, r: int) -> str:
-        while l >= 0 and r < len(s) and s[l] == s[r]:
-            l -= 1
-            r += 1
-        return s[l+1:r]
+        maxLen = 1
+        for start in range(n-1, -1, -1):
+            for end in range(start+1, n):
+                print(f"{start=},{end=}")
+                # palindrome condition
+                if s[start] == s[end]:
+                    # if it's a two char. string or if the remaining string is a palindrome too
+                    if end - start == 1 or dp[start+1][end-1]:
+                        dp[start][end] = True
+                        print(dp)
+                        if maxLen < end - start + 1:
+                            maxLen = end - start + 1
+                            ans = s[start: end + 1]
+
+        return ans
 
 
 solution = Solution()
-ans = solution.longestPalindrome(s="cbbd")
+ans = solution.longestPalindrome(s="babad")
 print(f"{ans=}")
 
 
